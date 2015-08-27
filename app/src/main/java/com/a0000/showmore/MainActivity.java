@@ -1,5 +1,6 @@
 package com.a0000.showmore;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,9 +18,10 @@ public class MainActivity extends ActionBarActivity {
 
     private Random rand = new Random();
 
-    private RecyclerView recyclerView;
+    private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private MyAdapter mAdapter;
+    private View mIvLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,18 +32,19 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void initView() {
-        recyclerView = (RecyclerView) findViewById(R.id.rv);
+        mRecyclerView = (RecyclerView) findViewById(R.id.rv);
+        mIvLabel = findViewById(R.id.iv_label);
     }
 
     private void initData() {
         mLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setLayoutManager(mLayoutManager);
         //设置分隔线
-        recyclerView.addItemDecoration(new RecyclerViewDivider(this));
-        recyclerView.setVisibility(View.VISIBLE);
+        mRecyclerView.addItemDecoration(new RecyclerViewDivider(this));
+        mRecyclerView.setVisibility(View.VISIBLE);
 
         mAdapter = new MyAdapter();
-        recyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(mAdapter);
         List<Description> datas = mAdapter.getDatas();
         // 随机生成30以内个条目
         for (int i=0; i<5+rand.nextInt(30); i++) {
@@ -57,6 +60,13 @@ public class MainActivity extends ActionBarActivity {
             }
             datas.add(desc);
         }
+        mIvLabel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, LabelActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
